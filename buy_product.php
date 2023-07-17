@@ -2,30 +2,41 @@
 include 'dbconnection.php';
 session_start();
 
-if(isset($_GET['c_id']))
-{
-    
-    $order_id=$_GET['c_id'];
-    echo "$order_id";
-    
-
+if(isset($_GET['sale_id']))
+    {
         
-    $sql="SELECT * FROM model WHERE model='$order'";
-    $result=mysqli_query($db, $sql);
-    $row=mysqli_fetch_array($result);
-    $pName=$row['name'];
-     //$pPrice=$row['product_price'];
-    $delivery_charge=50;
-     //$total_price=$pPrice+$delivery_charge;
-     //$pImage=$row['product_image'];
- }
-        else
+        $sale_id=$_GET['sale_id'];  
+        $sql="SELECT * FROM sale2 WHERE sale_id='$sale_id'";
+        $result=mysqli_query($db, $sql);
+        $row=mysqli_num_rows($result);
+        if($row!=0)
         {
-            echo "No product found";
-            //$delivery_charge=50;
-            
+            while($row2=mysqli_fetch_assoc($result))
+            {
+                $car_number=$row2['carmodel'];
+
+                $sql2="SELECT product_price FROM model where model = '".$car_number."'";
+                $getUser_productPrice=mysqli_query($db, $sql2);
+
+                $numrows2=mysqli_num_rows($getUser_productPrice);
+
+                if($numrows2!=0)
+                {
+                    while($row3=mysqli_fetch_assoc($getUser_productPrice))
+                    {
+                        $dbUser_carPrice=$row3['product_price'];
+                    }
+                }
+            }
         }
+    }
+    else
+    {
+        echo "No product found";
+        //$delivery_charge=50;
         
+    }
+    
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -85,26 +96,14 @@ if(isset($_GET['c_id']))
                 <table class="table table-bordered" width="500px">
                     <tr>
                         <th>Car Model :</th>
-                        <td><?=$pName?></td>
-                        <!-- <td rowspan="4" class="text-center"><img src="" width="200"></td> -->
-                        <td></td>
-                        <td rowspan="4" class="text-center"><img src="" width="200"></td>
+                        <td><?=$car_number?></td>
                     </tr>
                     <tr>
-                        <th>Product price :</th>
-                        <!-- <td><=number_format($pPrice)?>/-</td> -->
-                        <td>/-</td>
+                        <th>Product price(With Hidden Cost) :</th>
+                        <td><?=$dbUser_carPrice?>/-</td>
+                        <!-- <td>/-</td> -->
                     </tr>
-                    <tr>
-                        <th>Delivery Charge :</th>
-                        <!-- <td><?number_format($delivery_charge)?>/-</td> -->
-                        <td>/-</td>
-                    </tr> 
-                    <tr>
-                        <th>Total Price :</th>
-                        <!-- <td><=number_format($total_price)?>/-</td> -->
-                        <td>/-</td>
-                    </tr>              
+                                
                 </table>
                 <h4>Enter your details :</h4>
                 <form action="pay.php" method="post" accept-charset="utf-8">

@@ -110,7 +110,7 @@ if(!isset($_SESSION["s_name"]))
                                         while($row3=mysqli_fetch_assoc($getorders))
                                         {
                                                         $dbsaleid=$row3['sale_id'];
-                                                         $dbcustomerid=$row3['customer_id'];
+                                                        $dbcustomerid=$row3['customer_id'];
                                                         $carnumber =$row3['carmodel'];
                                                         $date=$row3['ordertime'];
                                                 
@@ -132,7 +132,7 @@ if(!isset($_SESSION["s_name"]))
                                                         echo "<td>$dbsaleid</td>";
                                                         echo "<td>$dbcustomerid</td>";
                                                         echo "<td>$dbusercarname</td>";
-                                                        echo "<td><a href='buy_product.php?model_id= $dbsaleid'>BUY NOW</a></td>";  
+                                                        echo "<td><a href='buy_product.php?sale_id= $dbsaleid'>BUY NOW</a></td>";  
                                                         echo "<td>$date</td>";
                                                         echo" </tr>";
                                         }
